@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9570C4C72F9B8AE700F2AF8E /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 9570C4C62F9B8AE700F2AF8E /* ComposableArchitecture */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		9587BE202F9B873700ECB124 /* delivery-tracking-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "delivery-tracking-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9570C4C72F9B8AE700F2AF8E /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "delivery-tracking-ios";
 			packageProductDependencies = (
+				9570C4C62F9B8AE700F2AF8E /* ComposableArchitecture */,
 			);
 			productName = "delivery-tracking-ios";
 			productReference = 9587BE202F9B873700ECB124 /* delivery-tracking-ios.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 9587BE172F9B873700ECB124;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9570C4C52F9B8AE700F2AF8E /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9587BE212F9B873700ECB124 /* Products */;
 			projectDirPath = "";
@@ -332,6 +341,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9570C4C52F9B8AE700F2AF8E /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.25.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9570C4C62F9B8AE700F2AF8E /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9570C4C52F9B8AE700F2AF8E /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9587BE182F9B873700ECB124 /* Project object */;
 }
