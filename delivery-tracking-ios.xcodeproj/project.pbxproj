@@ -10,11 +10,27 @@
 		9570C4C72F9B8AE700F2AF8E /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 9570C4C62F9B8AE700F2AF8E /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9570C4E32F9B8DD700F2AF8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9587BE182F9B873700ECB124 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9587BE1F2F9B873700ECB124;
+			remoteInfo = "delivery-tracking-ios";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		9570C4DF2F9B8DD700F2AF8E /* delivery-tracking-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "delivery-tracking-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9587BE202F9B873700ECB124 /* delivery-tracking-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "delivery-tracking-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		9570C4E02F9B8DD700F2AF8E /* delivery-tracking-iosTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "delivery-tracking-iosTests";
+			sourceTree = "<group>";
+		};
 		9587BE222F9B873700ECB124 /* delivery-tracking-ios */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "delivery-tracking-ios";
@@ -23,6 +39,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9570C4DC2F9B8DD700F2AF8E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9587BE1D2F9B873700ECB124 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -38,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				9587BE222F9B873700ECB124 /* delivery-tracking-ios */,
+				9570C4E02F9B8DD700F2AF8E /* delivery-tracking-iosTests */,
 				9587BE212F9B873700ECB124 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				9587BE202F9B873700ECB124 /* delivery-tracking-ios.app */,
+				9570C4DF2F9B8DD700F2AF8E /* delivery-tracking-iosTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,6 +78,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9570C4DE2F9B8DD700F2AF8E /* delivery-tracking-iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9570C4E52F9B8DD700F2AF8E /* Build configuration list for PBXNativeTarget "delivery-tracking-iosTests" */;
+			buildPhases = (
+				9570C4DB2F9B8DD700F2AF8E /* Sources */,
+				9570C4DC2F9B8DD700F2AF8E /* Frameworks */,
+				9570C4DD2F9B8DD700F2AF8E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9570C4E42F9B8DD700F2AF8E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9570C4E02F9B8DD700F2AF8E /* delivery-tracking-iosTests */,
+			);
+			name = "delivery-tracking-iosTests";
+			packageProductDependencies = (
+			);
+			productName = "delivery-tracking-iosTests";
+			productReference = 9570C4DF2F9B8DD700F2AF8E /* delivery-tracking-iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		9587BE1F2F9B873700ECB124 /* delivery-tracking-ios */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9587BE2B2F9B873800ECB124 /* Build configuration list for PBXNativeTarget "delivery-tracking-ios" */;
@@ -86,6 +134,10 @@
 				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 2640;
 				TargetAttributes = {
+					9570C4DE2F9B8DD700F2AF8E = {
+						CreatedOnToolsVersion = 26.4;
+						TestTargetID = 9587BE1F2F9B873700ECB124;
+					};
 					9587BE1F2F9B873700ECB124 = {
 						CreatedOnToolsVersion = 26.4;
 					};
@@ -109,11 +161,19 @@
 			projectRoot = "";
 			targets = (
 				9587BE1F2F9B873700ECB124 /* delivery-tracking-ios */,
+				9570C4DE2F9B8DD700F2AF8E /* delivery-tracking-iosTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9570C4DD2F9B8DD700F2AF8E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9587BE1E2F9B873700ECB124 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,6 +184,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9570C4DB2F9B8DD700F2AF8E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9587BE1C2F9B873700ECB124 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -133,7 +200,57 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9570C4E42F9B8DD700F2AF8E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9587BE1F2F9B873700ECB124 /* delivery-tracking-ios */;
+			targetProxy = 9570C4E32F9B8DD700F2AF8E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		9570C4E62F9B8DD700F2AF8E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 553GYK7535;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lokaquest.delivery-tracking-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/delivery-tracking-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/delivery-tracking-ios";
+			};
+			name = Debug;
+		};
+		9570C4E72F9B8DD700F2AF8E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 553GYK7535;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lokaquest.delivery-tracking-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/delivery-tracking-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/delivery-tracking-ios";
+			};
+			name = Release;
+		};
 		9587BE292F9B873800ECB124 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -322,6 +439,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9570C4E52F9B8DD700F2AF8E /* Build configuration list for PBXNativeTarget "delivery-tracking-iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9570C4E62F9B8DD700F2AF8E /* Debug */,
+				9570C4E72F9B8DD700F2AF8E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9587BE1B2F9B873700ECB124 /* Build configuration list for PBXProject "delivery-tracking-ios" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
