@@ -7,7 +7,7 @@
 
 import Foundation
 
-class OrderService {
+class OrderService: OrderServiceProtocol {
     func fetchOrders() async throws(OrderServiceError) -> [Order] {
         do {
             try await Task.sleep(for: .seconds(1))

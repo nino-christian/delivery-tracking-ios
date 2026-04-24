@@ -14,12 +14,13 @@ struct OrderServiceClient {
 }
 
 extension OrderServiceClient: DependencyKey {
-    static let liveValue: OrderServiceClient = {
-        let service = OrderService()
-        return OrderServiceClient(
+    static let liveValue: OrderServiceClient = makeClient(service: OrderService())
+
+    static func makeClient(service: any OrderServiceProtocol) -> OrderServiceClient {
+        OrderServiceClient(
             fetchOrders: { try await service.fetchOrders() }
         )
-    }()
+    }
 }
 
 extension DependencyValues {

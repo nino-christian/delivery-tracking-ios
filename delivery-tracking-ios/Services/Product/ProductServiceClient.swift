@@ -14,12 +14,13 @@ struct ProductServiceClient {
 }
 
 extension ProductServiceClient: DependencyKey {
-    static let liveValue: ProductServiceClient = {
-        let service = ProductService()
-        return ProductServiceClient(
+    static let liveValue: ProductServiceClient = makeClient(service: ProductService())
+
+    static func makeClient(service: any ProductServiceProtocol) -> ProductServiceClient {
+        ProductServiceClient(
             fetchProduct: { id in try await service.fetchProduct(id: id) }
         )
-    }()
+    }
 }
 
 extension DependencyValues {
