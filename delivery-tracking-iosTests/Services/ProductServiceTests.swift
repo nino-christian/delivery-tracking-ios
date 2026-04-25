@@ -11,51 +11,53 @@ import XCTest
 @MainActor
 final class ProductServiceTests: XCTestCase {
 
-    private var sut: ProductService!
-
-    override func setUp() {
-        super.setUp()
-        sut = ProductService()
+    private func makeSUT() -> (client: ProductServiceClient, mock: MockProductService) {
+        let mock = MockProductService()
+        let client = ProductServiceClient.makeClient(service: mock)
+        return (client, mock)
     }
 
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-
-    // MARK: - Success
+    // MARK: - fetchProduct
 
     func test_fetchProduct_returnsCorrectProduct() async throws {
-        let product = try await sut.fetchProduct(id: 1)
+        let (client, mock) = makeSUT()
+        mock.fetchProductResult = .success(StubData.products[0])
 
-        XCTAssertEqual(product.id, 1)
+        let product = try await client.fetchProduct(1)
+
+        XCTAssertEqual(product.id, StubData.products[0].id)
     }
 
     func test_fetchProduct_returnsCorrectName() async throws {
-        let product = try await sut.fetchProduct(id: 1)
+        let (client, mock) = makeSUT()
+        mock.fetchProductResult = .success(StubData.products[0])
+
+        let product = try await client.fetchProduct(1)
 
         XCTAssertEqual(product.name, StubData.products[0].name)
     }
 
-    // MARK: - Failure
-
     func test_fetchProduct_throwsNotFound_forInvalidId() async {
+        let (client, mock) = makeSUT()
+        mock.fetchProductResult = .failure(.notFound(id: 999))
+
         do {
-            _ = try await sut.fetchProduct(id: 999)
-            XCTFail("Expected notFound error to be thrown")
-        } catch {
+            _ = try await client.fetchProduct(999)
+            XCTFail("Expected notFound error")
+        } catch let error as ProductServiceError {
             XCTAssertEqual(error, .notFound(id: 999))
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
     }
 
-    func test_fetchProduct_failureThroughClient() async {
-        let client = ProductServiceClient(
-            fetchProduct: { _ in throw ProductServiceError.fetchFailed }
-        )
+    func test_fetchProduct_throwsFetchFailed() async {
+        let (client, mock) = makeSUT()
+        mock.fetchProductResult = .failure(.fetchFailed)
 
         do {
             _ = try await client.fetchProduct(1)
-            XCTFail("Expected fetchFailed error to be thrown")
+            XCTFail("Expected fetchFailed error")
         } catch let error as ProductServiceError {
             XCTAssertEqual(error, .fetchFailed)
         } catch {

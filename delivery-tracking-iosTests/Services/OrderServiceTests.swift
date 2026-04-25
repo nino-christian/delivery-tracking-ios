@@ -11,17 +11,47 @@ import XCTest
 @MainActor
 final class OrderServiceTests: XCTestCase {
 
-    // MARK: - fetchOrders via client
+    private func makeSUT() -> (client: OrderServiceClient, mock: MockOrderService) {
+        let mock = MockOrderService()
+        let client = OrderServiceClient.makeClient(service: mock)
+        return (client, mock)
+    }
 
-    func test_fetchOrders_failureThroughClient() async {
-        let client = OrderServiceClient(
-            fetchOrders: { throw OrderServiceError.fetchFailed },
-            fetchOrder: { _ in throw OrderServiceError.fetchFailed }
-        )
+    // MARK: - fetchOrders
+
+    func test_fetchOrders_returnsAllOrders() async throws {
+        let (client, _) = makeSUT()
+
+        let orders = try await client.fetchOrders()
+
+        XCTAssertEqual(orders.count, StubData.orders.count)
+    }
+
+    func test_fetchOrders_returnsCorrectOrderIds() async throws {
+        let (client, _) = makeSUT()
+
+        let orders = try await client.fetchOrders()
+
+        XCTAssertEqual(orders.map { $0.id }, StubData.orders.map { $0.id })
+    }
+
+    func test_fetchOrders_eachOrderHasAtLeastOneStatusEntry() async throws {
+        let (client, _) = makeSUT()
+
+        let orders = try await client.fetchOrders()
+
+        for order in orders {
+            XCTAssertFalse(order.statusHistory.isEmpty, "Order \(order.id) has no status history")
+        }
+    }
+
+    func test_fetchOrders_throwsFetchFailed() async {
+        let (client, mock) = makeSUT()
+        mock.fetchOrdersResult = .failure(.fetchFailed)
 
         do {
             _ = try await client.fetchOrders()
-            XCTFail("Expected fetchFailed error to be thrown")
+            XCTFail("Expected fetchFailed error")
         } catch let error as OrderServiceError {
             XCTAssertEqual(error, .fetchFailed)
         } catch {
@@ -29,17 +59,25 @@ final class OrderServiceTests: XCTestCase {
         }
     }
 
-    // MARK: - fetchOrder via client
+    // MARK: - fetchOrder
 
-    func test_fetchOrder_failureThroughClient() async {
-        let client = OrderServiceClient(
-            fetchOrders: { StubData.orders },
-            fetchOrder: { _ in throw OrderServiceError.fetchFailed }
-        )
+    func test_fetchOrder_returnsCorrectOrder() async throws {
+        let (client, mock) = makeSUT()
+        let expected = StubData.orders[0]
+        mock.fetchOrderResult = .success(expected)
+
+        let order = try await client.fetchOrder(expected.id)
+
+        XCTAssertEqual(order.id, expected.id)
+    }
+
+    func test_fetchOrder_throwsFetchFailed() async {
+        let (client, mock) = makeSUT()
+        mock.fetchOrderResult = .failure(.fetchFailed)
 
         do {
             _ = try await client.fetchOrder(1)
-            XCTFail("Expected fetchFailed error to be thrown")
+            XCTFail("Expected fetchFailed error")
         } catch let error as OrderServiceError {
             XCTAssertEqual(error, .fetchFailed)
         } catch {
@@ -47,15 +85,13 @@ final class OrderServiceTests: XCTestCase {
         }
     }
 
-    func test_fetchOrder_notFoundThroughClient() async {
-        let client = OrderServiceClient(
-            fetchOrders: { StubData.orders },
-            fetchOrder: { id in throw OrderServiceError.notFound(id: id) }
-        )
+    func test_fetchOrder_throwsNotFound() async {
+        let (client, mock) = makeSUT()
+        mock.fetchOrderResult = .failure(.notFound(id: 999))
 
         do {
             _ = try await client.fetchOrder(999)
-            XCTFail("Expected notFound error to be thrown")
+            XCTFail("Expected notFound error")
         } catch let error as OrderServiceError {
             XCTAssertEqual(error, .notFound(id: 999))
         } catch {
