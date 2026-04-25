@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ProductService: ProductServiceProtocol {
+struct ProductService: ProductServiceProtocol {
     func fetchProduct(id: Int) async throws(ProductServiceError) -> Product {
         do {
             try await Task.sleep(for: .seconds(1))

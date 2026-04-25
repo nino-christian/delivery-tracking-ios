@@ -10,7 +10,7 @@ import Foundation
 
 @DependencyClient
 struct OrderServiceClient {
-    var fetchOrders: () async throws -> [Order] = { [] }
+    var fetchOrders: @Sendable () async throws -> [Order]
 }
 
 extension OrderServiceClient: DependencyKey {
