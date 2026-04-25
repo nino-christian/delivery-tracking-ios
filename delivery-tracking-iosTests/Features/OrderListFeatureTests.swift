@@ -1,5 +1,5 @@
 //
-//  OrderFeatureTests.swift
+//  OrderListFeatureTests.swift
 //  delivery-tracking-ios
 //
 //  Created by Niño Christian on 4/24/26.
@@ -10,7 +10,7 @@ import XCTest
 @testable import delivery_tracking_ios
 
 @MainActor
-final class OrderFeatureTests: XCTestCase {
+final class OrderListFeatureTests: XCTestCase {
 
     // MARK: - onAppear
 

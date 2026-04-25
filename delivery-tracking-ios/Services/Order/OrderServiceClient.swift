@@ -11,6 +11,7 @@ import Foundation
 @DependencyClient
 struct OrderServiceClient {
     var fetchOrders: @Sendable () async throws -> [Order]
+    var fetchOrder: @Sendable (Int) async throws -> Order
 }
 
 extension OrderServiceClient: DependencyKey {
@@ -18,7 +19,8 @@ extension OrderServiceClient: DependencyKey {
 
     static func makeClient(service: any OrderServiceProtocol) -> OrderServiceClient {
         OrderServiceClient(
-            fetchOrders: { try await service.fetchOrders() }
+            fetchOrders: { try await service.fetchOrders() },
+            fetchOrder: { try await service.fetchOrder(id: $0) }
         )
     }
 }

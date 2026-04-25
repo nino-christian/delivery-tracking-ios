@@ -8,6 +8,7 @@
 import XCTest
 @testable import delivery_tracking_ios
 
+@MainActor
 final class ProductServiceTests: XCTestCase {
 
     private var sut: ProductService!
@@ -42,10 +43,8 @@ final class ProductServiceTests: XCTestCase {
         do {
             _ = try await sut.fetchProduct(id: 999)
             XCTFail("Expected notFound error to be thrown")
-        } catch let error as ProductServiceError {
-            XCTAssertEqual(error, .notFound(id: 999))
         } catch {
-            XCTFail("Unexpected error: \(error)")
+            XCTAssertEqual(error, .notFound(id: 999))
         }
     }
 

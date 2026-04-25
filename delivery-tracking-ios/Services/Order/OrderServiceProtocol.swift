@@ -9,4 +9,5 @@ import Foundation
 
 protocol OrderServiceProtocol {
     func fetchOrders() async throws(OrderServiceError) -> [Order]
+    func fetchOrder(id: Int) async throws(OrderServiceError) -> Order
 }

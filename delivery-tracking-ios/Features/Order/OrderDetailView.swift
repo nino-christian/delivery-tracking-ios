@@ -26,40 +26,90 @@ struct OrderDetailView: View {
     }()
 
     var body: some View {
-        List {
-            Section("Order") {
-                LabeledContent("Order ID", value: "#\(store.order.id)")
-                LabeledContent("Quantity", value: "\(store.order.quantity)")
-            }
+        detailContent(store: store)
+            .navigationTitle("Order #\(store.order.id)")
+            .onAppear { store.send(.onAppear) }
+            .onDisappear { store.send(.onDisappear) }
+    }
+}
 
-            Section("Product") {
-                LabeledContent("Name", value: store.order.product.name)
-                LabeledContent("Manufacturer", value: store.order.product.manufacturer)
-                Button("View Product Detail") {
-                    store.send(.viewProductTapped)
+extension OrderDetailView {
+    @ViewBuilder
+    func detailContent(store: StoreOf<OrderDetailFeature>) -> some View {
+        switch store.fetchState {
+        case .loading:
+            ProgressView()
+
+        case .failure(let error):
+            VStack(spacing: 12) {
+                Text(error.localizedDescription)
+                    .foregroundStyle(.red)
+                    .multilineTextAlignment(.center)
+                Button("Retry") {
+                    store.send(.retryFetchTapped)
                 }
             }
+            .padding()
 
-            Section("Status History") {
-                ForEach(store.order.statusHistory, id: \.timestamp) { entry in
-                    HStack {
-                        Text(entry.status.displayName)
-                            .foregroundStyle(entry.status.color)
-
-                        Spacer()
-
-                        VStack(alignment: .trailing, spacing: 2) {
-                            Text(entry.timestamp, formatter: Self.timeFormatter)
-                                .font(.caption)
-                            Text(entry.timestamp, formatter: Self.dateFormatter)
-                                .font(.caption2)
+        case .idle:
+            List {
+                if let current = store.order.currentStatus {
+                    Section {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("Current Status")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                Text(current.status.displayName)
+                                    .font(.title3.bold())
+                                    .foregroundStyle(current.status.color)
+                            }
+                            Spacer()
+                            if current.status == .delivered {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.title2)
+                                    .foregroundStyle(.green)
+                            } else {
+                                ProgressView()
+                            }
                         }
-                        .foregroundStyle(.secondary)
+                        .padding(.vertical, 4)
+                    }
+                }
+
+                Section("Order") {
+                    LabeledContent("Order ID", value: "#\(store.order.id)")
+                    LabeledContent("Quantity", value: "\(store.order.quantity)")
+                }
+
+                Section("Product") {
+                    LabeledContent("Name", value: store.order.product.name)
+                    LabeledContent("Manufacturer", value: store.order.product.manufacturer)
+                    Button("View Product Detail") {
+                        store.send(.viewProductTapped)
+                    }
+                }
+
+                Section("Status History") {
+                    ForEach(store.order.statusHistory, id: \.timestamp) { entry in
+                        HStack {
+                            Text(entry.status.displayName)
+                                .foregroundStyle(entry.status.color)
+
+                            Spacer()
+
+                            VStack(alignment: .trailing, spacing: 2) {
+                                Text(entry.timestamp, formatter: Self.timeFormatter)
+                                    .font(.caption)
+                                Text(entry.timestamp, formatter: Self.dateFormatter)
+                                    .font(.caption2)
+                            }
+                            .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
         }
-        .navigationTitle("Order #\(store.order.id)")
     }
 }
 

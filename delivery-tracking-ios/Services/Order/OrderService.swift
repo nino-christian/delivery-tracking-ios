@@ -8,12 +8,17 @@
 import Foundation
 
 struct OrderService: OrderServiceProtocol {
+
     func fetchOrders() async throws(OrderServiceError) -> [Order] {
-        do {
-            try await Task.sleep(for: .seconds(1))
-            return StubData.orders
-        } catch {
-            throw .fetchFailed
-        }
+        try? await Task.sleep(for: .seconds(1))
+        if Bool.random() { throw .fetchFailed }
+        return StubData.orders
+    }
+
+    func fetchOrder(id: Int) async throws(OrderServiceError) -> Order {
+        try? await Task.sleep(for: .seconds(1))
+        if Bool.random() { throw .fetchFailed }
+        guard let order = StubData.order(id: id) else { throw .notFound(id: id) }
+        return order
     }
 }

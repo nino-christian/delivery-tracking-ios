@@ -24,9 +24,7 @@ struct ProductFeature {
         case fetchProductResponse(Result<Product, ProductFeatureError>)
     }
 
-    enum CancelID: String {
-        case fetchProduct
-    }
+    enum CancelID: String { case fetchProduct }
 
     @Dependency(\.productService) var productService
 

@@ -72,7 +72,10 @@ private struct OrderRow: View {
                 if let status = order.currentStatus {
                     Text(status.status.displayName)
                         .font(.caption)
-                        .foregroundStyle(status.status.color)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                        .padding(4)
+                        .background(status.status.color, in: RoundedRectangle(cornerRadius: 6))
                 }
             }
             Spacer()

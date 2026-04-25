@@ -9,4 +9,5 @@ import Foundation
 
 enum OrderServiceError: Error, Equatable {
     case fetchFailed
+    case notFound(id: Int)
 }
