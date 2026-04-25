@@ -34,10 +34,8 @@ extension OrderListView {
                 }
             } else {
                 List(store.orders) { order in
-                    Button {
+                    OrderRow(order: order) {
                         store.send(.orderRowTapped(id: order.id))
-                    } label: {
-                        OrderRow(order: order)
                     }
                 }
             }
@@ -54,34 +52,6 @@ extension OrderListView {
                 }
             }
         }
-    }
-}
-
-private struct OrderRow: View {
-    let order: Order
-
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(order.product.name)
-                    .font(.headline)
-                Text("Qty: \(order.quantity)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                if let status = order.currentStatus {
-                    Text(status.status.displayName)
-                        .font(.caption)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.white)
-                        .padding(4)
-                        .background(status.status.color, in: RoundedRectangle(cornerRadius: 6))
-                }
-            }
-            Spacer()
-            Image(systemName: "chevron.right")
-                .foregroundStyle(.tertiary)
-        }
-        .padding(.vertical, 4)
     }
 }
 

@@ -27,12 +27,7 @@ extension ProductView {
         switch store.fetchStatus {
         case .idle:
             if let product = store.product {
-                List {
-                    Section {
-                        LabeledContent("Name", value: product.name)
-                        LabeledContent("Manufacturer", value: product.manufacturer)
-                    }
-                }
+                ProductInfoView(product: product)
             } else {
                 ProductSkeletonView()
             }
@@ -44,6 +39,7 @@ extension ProductView {
             VStack(spacing: 12) {
                 Text(error.localizedDescription)
                     .foregroundStyle(.red)
+
                 Button("Retry") {
                     store.send(.retryButtonTapped)
                 }
