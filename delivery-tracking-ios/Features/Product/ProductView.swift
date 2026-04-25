@@ -24,7 +24,7 @@ struct ProductView: View {
 extension ProductView {
     @ViewBuilder
     func productContent(store: StoreOf<ProductFeature>) -> some View {
-        switch store.productState {
+        switch store.fetchStatus {
         case .idle:
             if let product = store.product {
                 List {
@@ -34,11 +34,11 @@ extension ProductView {
                     }
                 }
             } else {
-                ProgressView()
+                ProductSkeletonView()
             }
 
         case .loading:
-            ProgressView()
+            ProductSkeletonView()
 
         case .failure(let error):
             VStack(spacing: 12) {

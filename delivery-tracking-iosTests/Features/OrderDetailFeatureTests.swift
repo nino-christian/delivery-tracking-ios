@@ -28,10 +28,10 @@ final class OrderDetailFeatureTests: XCTestCase {
             $0.date = .constant(fixedDate)
         }
 
-        await store.send(.onAppear) { $0.fetchState = .loading }
+        await store.send(.onAppear) { $0.fetchStatus = .loading }
         await store.receive(.fetchOrderResponse(.success(order))) {
             $0.order = order
-            $0.fetchState = .idle
+            $0.fetchStatus = .idle
         }
 
         await clock.advance(by: .seconds(4))
@@ -50,9 +50,9 @@ final class OrderDetailFeatureTests: XCTestCase {
             $0.orderService.fetchOrder = { _ in throw OrderServiceError.fetchFailed }
         }
 
-        await store.send(.onAppear) { $0.fetchState = .loading }
+        await store.send(.onAppear) { $0.fetchStatus = .loading }
         await store.receive(.fetchOrderResponse(.failure(.fetchFailed))) {
-            $0.fetchState = .failure(.fetchFailed)
+            $0.fetchStatus = .failure(.fetchFailed)
         }
     }
 
@@ -69,7 +69,7 @@ final class OrderDetailFeatureTests: XCTestCase {
         }
         store.exhaustivity = .off
 
-        await store.send(.onAppear) { $0.fetchState = .loading }
+        await store.send(.onAppear) { $0.fetchStatus = .loading }
         await store.send(.onAppear)
     }
 
@@ -78,7 +78,7 @@ final class OrderDetailFeatureTests: XCTestCase {
     func test_retryFetchTapped_setsLoadingThenSuccess() async {
         let order = StubData.orders[0]
         let store = TestStore(
-            initialState: OrderDetailFeature.State(order: order, fetchState: .failure(.fetchFailed))
+            initialState: OrderDetailFeature.State(order: order, fetchStatus: .failure(.fetchFailed))
         ) {
             OrderDetailFeature()
         } withDependencies: {
@@ -88,26 +88,26 @@ final class OrderDetailFeatureTests: XCTestCase {
         }
         store.exhaustivity = .off
 
-        await store.send(.retryFetchTapped) { $0.fetchState = .loading }
+        await store.send(.retryFetchTapped) { $0.fetchStatus = .loading }
         await store.receive(.fetchOrderResponse(.success(order))) {
             $0.order = order
-            $0.fetchState = .idle
+            $0.fetchStatus = .idle
         }
     }
 
     func test_retryFetchTapped_setsFailure_onNotFound() async {
         let order = StubData.orders[0]
         let store = TestStore(
-            initialState: OrderDetailFeature.State(order: order, fetchState: .failure(.fetchFailed))
+            initialState: OrderDetailFeature.State(order: order, fetchStatus: .failure(.fetchFailed))
         ) {
             OrderDetailFeature()
         } withDependencies: {
             $0.orderService.fetchOrder = { id in throw OrderServiceError.notFound(id: id) }
         }
 
-        await store.send(.retryFetchTapped) { $0.fetchState = .loading }
+        await store.send(.retryFetchTapped) { $0.fetchStatus = .loading }
         await store.receive(.fetchOrderResponse(.failure(.notFound(id: order.id)))) {
-            $0.fetchState = .failure(.notFound(id: order.id))
+            $0.fetchStatus = .failure(.notFound(id: order.id))
         }
     }
 

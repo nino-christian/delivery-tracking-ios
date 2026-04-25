@@ -24,10 +24,10 @@ final class ProductFeatureTests: XCTestCase {
             $0.productService.fetchProduct = { _ in expectedProduct }
         }
 
-        await store.send(.onAppear) { $0.productState = .loading }
+        await store.send(.onAppear) { $0.fetchStatus = .loading }
         await store.receive(.fetchProductResponse(.success(expectedProduct))) {
             $0.product = expectedProduct
-            $0.productState = .idle
+            $0.fetchStatus = .idle
         }
     }
 
@@ -41,7 +41,7 @@ final class ProductFeatureTests: XCTestCase {
         }
         store.exhaustivity = .off
 
-        await store.send(.onAppear) { $0.productState = .loading }
+        await store.send(.onAppear) { $0.fetchStatus = .loading }
 
         // Guard blocks — already in flight
         await store.send(.onAppear)
@@ -52,17 +52,17 @@ final class ProductFeatureTests: XCTestCase {
     func test_retryButtonTapped_setsLoadingThenSuccess() async {
         let expectedProduct = StubData.products[0]
         let store = TestStore(
-            initialState: ProductFeature.State(productId: expectedProduct.id, productState: .failure(.fetchFailed))
+            initialState: ProductFeature.State(productId: expectedProduct.id, fetchStatus: .failure(.fetchFailed))
         ) {
             ProductFeature()
         } withDependencies: {
             $0.productService.fetchProduct = { _ in expectedProduct }
         }
 
-        await store.send(.retryButtonTapped) { $0.productState = .loading }
+        await store.send(.retryButtonTapped) { $0.fetchStatus = .loading }
         await store.receive(.fetchProductResponse(.success(expectedProduct))) {
             $0.product = expectedProduct
-            $0.productState = .idle
+            $0.fetchStatus = .idle
         }
     }
 
@@ -76,7 +76,7 @@ final class ProductFeatureTests: XCTestCase {
         }
         store.exhaustivity = .off
 
-        await store.send(.onAppear) { $0.productState = .loading }
+        await store.send(.onAppear) { $0.fetchStatus = .loading }
 
         // Guard blocks — already in flight
         await store.send(.retryButtonTapped)
@@ -93,9 +93,9 @@ final class ProductFeatureTests: XCTestCase {
             $0.productService.fetchProduct = { _ in throw ProductServiceError.fetchFailed }
         }
 
-        await store.send(.onAppear) { $0.productState = .loading }
+        await store.send(.onAppear) { $0.fetchStatus = .loading }
         await store.receive(.fetchProductResponse(.failure(.fetchFailed))) {
-            $0.productState = .failure(.fetchFailed)
+            $0.fetchStatus = .failure(.fetchFailed)
         }
     }
 
@@ -108,9 +108,9 @@ final class ProductFeatureTests: XCTestCase {
             $0.productService.fetchProduct = { id in throw ProductServiceError.notFound(id: id) }
         }
 
-        await store.send(.onAppear) { $0.productState = .loading }
+        await store.send(.onAppear) { $0.fetchStatus = .loading }
         await store.receive(.fetchProductResponse(.failure(.notFound(id: 999)))) {
-            $0.productState = .failure(.notFound(id: 999))
+            $0.fetchStatus = .failure(.notFound(id: 999))
         }
     }
 }

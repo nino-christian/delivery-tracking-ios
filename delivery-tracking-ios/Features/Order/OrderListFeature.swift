@@ -14,7 +14,7 @@ struct OrderListFeature {
     @ObservableState
     struct State: Equatable {
         var orders: [Order] = []
-        var ordersStatus: LoadingState<OrderListFeatureError> = .idle
+        var fetchStatus: LoadingState<OrderListFeatureError> = .idle
     }
 
     enum Action: Equatable {
@@ -35,13 +35,13 @@ struct OrderListFeature {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                if case .loading = state.ordersStatus { return .none }
-                state.ordersStatus = .loading
+                if case .loading = state.fetchStatus { return .none }
+                state.fetchStatus = .loading
                 return fetchEffect
 
             case .retryButtonTapped:
-                guard !state.ordersStatus.isLoading else { return .none }
-                state.ordersStatus = .loading
+                guard !state.fetchStatus.isLoading else { return .none }
+                state.fetchStatus = .loading
                 return fetchEffect
 
             case .orderRowTapped(let id):
@@ -49,11 +49,11 @@ struct OrderListFeature {
 
             case .fetchOrdersResponse(.success(let orders)):
                 state.orders = orders
-                state.ordersStatus = .idle
+                state.fetchStatus = .idle
                 return .none
 
             case .fetchOrdersResponse(.failure(let error)):
-                state.ordersStatus = .failure(error)
+                state.fetchStatus = .failure(error)
                 return .none
 
             case .delegate:

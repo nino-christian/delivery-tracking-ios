@@ -36,9 +36,9 @@ struct OrderDetailView: View {
 extension OrderDetailView {
     @ViewBuilder
     func detailContent(store: StoreOf<OrderDetailFeature>) -> some View {
-        switch store.fetchState {
+        switch store.fetchStatus {
         case .loading:
-            ProgressView()
+            OrderDetailSkeletonView()
 
         case .failure(let error):
             VStack(spacing: 12) {

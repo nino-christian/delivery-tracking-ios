@@ -23,7 +23,7 @@ struct OrderListView: View {
 extension OrderListView {
     @ViewBuilder
     func contentView(store: StoreOf<OrderListFeature>) -> some View {
-        switch store.ordersStatus {
+        switch store.fetchStatus {
         case .idle:
             if store.orders.isEmpty {
                 VStack(spacing: 12) {
@@ -39,12 +39,11 @@ extension OrderListView {
                     } label: {
                         OrderRow(order: order)
                     }
-                    .buttonStyle(.plain)
                 }
             }
 
         case .loading:
-            ProgressView()
+            OrderListSkeletonView()
 
         case .failure(let error):
             VStack(spacing: 12) {

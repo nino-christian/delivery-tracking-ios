@@ -14,7 +14,7 @@ struct OrderDetailFeature {
     @ObservableState
     struct State: Equatable {
         var order: Order
-        var fetchState: LoadingState<OrderDetailFeatureError> = .idle
+        var fetchStatus: LoadingState<OrderDetailFeatureError> = .idle
     }
 
     enum Action: Equatable {
@@ -41,8 +41,8 @@ struct OrderDetailFeature {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                guard !state.fetchState.isLoading else { return .none }
-                state.fetchState = .loading
+                guard !state.fetchStatus.isLoading else { return .none }
+                state.fetchStatus = .loading
                 return fetchEffect(id: state.order.id)
 
             case .onDisappear:
@@ -52,19 +52,19 @@ struct OrderDetailFeature {
                 )
 
             case .retryFetchTapped:
-                guard !state.fetchState.isLoading else { return .none }
-                state.fetchState = .loading
+                guard !state.fetchStatus.isLoading else { return .none }
+                state.fetchStatus = .loading
                 return fetchEffect(id: state.order.id)
 
             case .fetchOrderResponse(.success(let order)):
                 state.order = order
-                state.fetchState = .idle
+                state.fetchStatus = .idle
                 guard let current = order.currentStatus?.status,
                       current != .delivered else { return .none }
                 return simulationEffect(from: current)
 
             case .fetchOrderResponse(.failure(let error)):
-                state.fetchState = .failure(error)
+                state.fetchStatus = .failure(error)
                 return .none
 
             case .statusUpdateReceived(let status):

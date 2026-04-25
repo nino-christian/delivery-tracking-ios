@@ -15,7 +15,7 @@ struct ProductFeature {
     struct State: Equatable {
         let productId: Int
         var product: Product? = nil
-        var productState: LoadingState<ProductFeatureError> = .idle
+        var fetchStatus: LoadingState<ProductFeatureError> = .idle
     }
 
     enum Action: Equatable {
@@ -32,23 +32,23 @@ struct ProductFeature {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                if case .loading = state.productState { return .none }
-                state.productState = .loading
+                if case .loading = state.fetchStatus { return .none }
+                state.fetchStatus = .loading
                 return fetchEffect(id: state.productId)
 
             case .retryButtonTapped:
-                guard !state.productState.isLoading else { return .none }
-                state.productState = .loading
+                guard !state.fetchStatus.isLoading else { return .none }
+                state.fetchStatus = .loading
                 return fetchEffect(id: state.productId)
 
             case .fetchProductResponse(.success(let product)):
                 state.product = product
-                state.productState = .idle
+                state.fetchStatus = .idle
                 return .none
 
             case .fetchProductResponse(.failure(let error)):
                 state.product = nil
-                state.productState = .failure(error)
+                state.fetchStatus = .failure(error)
                 return .none
             }
         }
