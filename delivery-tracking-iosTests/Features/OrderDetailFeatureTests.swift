@@ -111,27 +111,6 @@ final class OrderDetailFeatureTests: XCTestCase {
         }
     }
 
-    // MARK: - onDisappear
-
-    func test_onDisappear_cancelsBothEffects() async {
-        let order = StubData.orders[2] // pending
-        let clock = TestClock()
-        let store = TestStore(
-            initialState: OrderDetailFeature.State(order: order)
-        ) {
-            OrderDetailFeature()
-        } withDependencies: {
-            $0.orderService.fetchOrder = { _ in order }
-            $0.continuousClock = clock
-            $0.date = .constant(Date(timeIntervalSince1970: 1000))
-        }
-        store.exhaustivity = .off
-
-        await store.send(.onAppear)
-        await store.send(.onDisappear)
-        await clock.advance(by: .seconds(30))
-    }
-
     // MARK: - statusUpdateReceived
 
     func test_statusUpdateReceived_appendsEntryToHistory() async {

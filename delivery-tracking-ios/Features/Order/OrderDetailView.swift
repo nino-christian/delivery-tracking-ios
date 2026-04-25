@@ -15,7 +15,6 @@ struct OrderDetailView: View {
         detailContent(store: store)
             .navigationTitle("Order #\(store.order.id)")
             .onAppear { store.send(.onAppear) }
-            .onDisappear { store.send(.onDisappear) }
     }
 }
 

@@ -19,7 +19,6 @@ struct OrderDetailFeature {
 
     enum Action: Equatable {
         case onAppear
-        case onDisappear
         case retryFetchTapped
         case fetchOrderResponse(Result<Order, OrderDetailFeatureError>)
         case statusUpdateReceived(OrderStatus)
@@ -44,12 +43,6 @@ struct OrderDetailFeature {
                 guard !state.fetchStatus.isLoading else { return .none }
                 state.fetchStatus = .loading
                 return fetchEffect(id: state.order.id)
-
-            case .onDisappear:
-                return .merge(
-                    .cancel(id: CancelID.fetchOrder),
-                    .cancel(id: CancelID.statusSimulation)
-                )
 
             case .retryFetchTapped:
                 guard !state.fetchStatus.isLoading else { return .none }
