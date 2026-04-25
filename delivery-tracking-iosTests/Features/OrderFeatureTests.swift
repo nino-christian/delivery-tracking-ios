@@ -15,8 +15,8 @@ final class OrderFeatureTests: XCTestCase {
     // MARK: - onAppear
 
     func test_onAppear_setsLoadingThenSuccess() async {
-        let store = TestStore(initialState: OrderFeature.State()) {
-            OrderFeature()
+        let store = TestStore(initialState: OrderListFeature.State()) {
+            OrderListFeature()
         } withDependencies: {
             $0.orderService.fetchOrders = { StubData.orders }
         }
@@ -29,8 +29,8 @@ final class OrderFeatureTests: XCTestCase {
     }
 
     func test_onAppear_isIgnored_whenLoading() async {
-        let store = TestStore(initialState: OrderFeature.State()) {
-            OrderFeature()
+        let store = TestStore(initialState: OrderListFeature.State()) {
+            OrderListFeature()
         } withDependencies: {
             $0.orderService.fetchOrders = { StubData.orders }
         }
@@ -46,9 +46,9 @@ final class OrderFeatureTests: XCTestCase {
 
     func test_retryButtonTapped_setsLoadingThenSuccess() async {
         let store = TestStore(
-            initialState: OrderFeature.State(ordersStatus: .failure(.fetchFailed))
+            initialState: OrderListFeature.State(ordersStatus: .failure(.fetchFailed))
         ) {
-            OrderFeature()
+            OrderListFeature()
         } withDependencies: {
             $0.orderService.fetchOrders = { StubData.orders }
         }
@@ -61,8 +61,8 @@ final class OrderFeatureTests: XCTestCase {
     }
 
     func test_retryButtonTapped_isIgnored_whenLoading() async {
-        let store = TestStore(initialState: OrderFeature.State()) {
-            OrderFeature()
+        let store = TestStore(initialState: OrderListFeature.State()) {
+            OrderListFeature()
         } withDependencies: {
             $0.orderService.fetchOrders = { StubData.orders }
         }
@@ -77,8 +77,8 @@ final class OrderFeatureTests: XCTestCase {
     // MARK: - Failure
 
     func test_onAppear_setsFailureState() async {
-        let store = TestStore(initialState: OrderFeature.State()) {
-            OrderFeature()
+        let store = TestStore(initialState: OrderListFeature.State()) {
+            OrderListFeature()
         } withDependencies: {
             $0.orderService.fetchOrders = { throw OrderServiceError.fetchFailed }
         }
@@ -91,9 +91,9 @@ final class OrderFeatureTests: XCTestCase {
 
     func test_retryButtonTapped_setsFailureState() async {
         let store = TestStore(
-            initialState: OrderFeature.State(ordersStatus: .failure(.fetchFailed))
+            initialState: OrderListFeature.State(ordersStatus: .failure(.fetchFailed))
         ) {
-            OrderFeature()
+            OrderListFeature()
         } withDependencies: {
             $0.orderService.fetchOrders = { throw OrderServiceError.fetchFailed }
         }
@@ -102,5 +102,19 @@ final class OrderFeatureTests: XCTestCase {
         await store.receive(.fetchOrdersResponse(.failure(.fetchFailed))) {
             $0.ordersStatus = .failure(.fetchFailed)
         }
+    }
+
+    // MARK: - Navigation delegate
+
+    func test_orderRowTapped_emitsDelegate() async {
+        let order = StubData.orders[0]
+        let store = TestStore(
+            initialState: OrderListFeature.State(orders: StubData.orders, ordersStatus: .idle)
+        ) {
+            OrderListFeature()
+        }
+
+        await store.send(.orderRowTapped(id: order.id))
+        await store.receive(.delegate(.orderTapped(id: order.id)))
     }
 }

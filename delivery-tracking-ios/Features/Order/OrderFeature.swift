@@ -1,5 +1,5 @@
 //
-//  OrderFeature.swift
+//  OrderListFeature.swift
 //  delivery-tracking-ios
 //
 //  Created by Niño Christian on 4/24/26.
@@ -9,18 +9,24 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-struct OrderFeature {
+struct OrderListFeature {
 
     @ObservableState
     struct State: Equatable {
         var orders: [Order] = []
-        var ordersStatus: LoadingState<OrderFeatureError> = .idle
+        var ordersStatus: LoadingState<OrderListFeatureError> = .idle
     }
 
     enum Action: Equatable {
         case onAppear
         case retryButtonTapped
-        case fetchOrdersResponse(Result<[Order], OrderFeatureError>)
+        case orderRowTapped(id: Int)
+        case fetchOrdersResponse(Result<[Order], OrderListFeatureError>)
+        case delegate(Delegate)
+
+        enum Delegate: Equatable {
+            case orderTapped(id: Int)
+        }
     }
 
     @Dependency(\.orderService) var orderService
@@ -29,10 +35,7 @@ struct OrderFeature {
         Reduce { state, action in
             switch action {
             case .onAppear:
-                if case .loading = state.ordersStatus {
-                    return .none
-                }
-                
+                if case .loading = state.ordersStatus { return .none }
                 state.ordersStatus = .loading
                 return fetchEffect
 
@@ -41,6 +44,9 @@ struct OrderFeature {
                 state.ordersStatus = .loading
                 return fetchEffect
 
+            case .orderRowTapped(let id):
+                return .send(.delegate(.orderTapped(id: id)))
+
             case .fetchOrdersResponse(.success(let orders)):
                 state.orders = orders
                 state.ordersStatus = .idle
@@ -48,6 +54,9 @@ struct OrderFeature {
 
             case .fetchOrdersResponse(.failure(let error)):
                 state.ordersStatus = .failure(error)
+                return .none
+
+            case .delegate:
                 return .none
             }
         }

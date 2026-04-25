@@ -12,8 +12,8 @@ import SwiftUI
 struct delivery_tracking_iosApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(store: Store(initialState: OrderFeature.State()) {
-                OrderFeature()
+            AppView(store: Store(initialState: AppFeature.State()) {
+                AppFeature()
             })
         }
     }

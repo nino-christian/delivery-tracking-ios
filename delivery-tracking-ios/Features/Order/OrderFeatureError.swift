@@ -1,5 +1,5 @@
 //
-//  OrderFeatureError.swift
+//  OrderListFeatureError.swift
 //  delivery-tracking-ios
 //
 //  Created by Niño Christian on 4/24/26.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum OrderFeatureError: Error, Equatable, LocalizedError {
+enum OrderListFeatureError: Error, Equatable, LocalizedError {
     case fetchFailed
 
     var errorDescription: String? {
